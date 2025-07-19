@@ -19,6 +19,7 @@ bin/internal/engine.version
 .history
 .svn/
 migrate_working_dir/
+*env
 
 # Puro related
 .puro.json
