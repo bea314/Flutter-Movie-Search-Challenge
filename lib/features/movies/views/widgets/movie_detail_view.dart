@@ -53,9 +53,9 @@ class MovieDetailView extends StatelessWidget {
           const SizedBox(height: 8),
 
           if (movie.awards.isNotEmpty) Text("🏆 Awards: ${movie.awards}"),
+          if (movie.released.isNotEmpty) Text("📅 Released: ${movie.released}"),
           if (movie.director.isNotEmpty) Text("🎬 Director: ${movie.director}"),
           if (movie.writer.isNotEmpty) Text("✍️ Writer: ${movie.writer}"),
-          if (movie.released.isNotEmpty) Text("📅 Released: ${movie.released}"),
           if (movie.actors.isNotEmpty) Text("🎭 Actors: ${movie.actors}"),
           if (movie.language.isNotEmpty) Text("🌎 Language: ${movie.language}"),
           if (movie.boxOffice.isNotEmpty)

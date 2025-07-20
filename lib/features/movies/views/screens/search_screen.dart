@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../data/models/movie_model.dart';
 import '../../data/models/movie_response_model.dart';
+import '../widgets/drawer_filter.dart';
 import '../widgets/modal_error_bottom_sheet.dart';
 import '../widgets/movie_list_item.dart';
-
 
 MovieResponseModel testData = MovieResponseModel(
   totalResults: '1',
@@ -43,6 +43,8 @@ MovieResponseModel testData = MovieResponseModel(
 class SearchScreen extends StatelessWidget {
   SearchScreen({super.key});
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final TextEditingController _controller = TextEditingController();
 
   void _onSearch(BuildContext context) async {
@@ -51,7 +53,7 @@ class SearchScreen extends StatelessWidget {
     if (query.isEmpty) {
       ErrorBottomSheet.show(
         context,
-        title: 'Warning', 
+        title: 'Warning',
         message: 'Please enter a movie title to search.',
         actionLabel: 'ok',
       );
@@ -61,11 +63,18 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final posterMinWidth = (MediaQuery.of(context).size.width < 600) ? 150.0 : 250.0;
-  final screenWidth = MediaQuery.of(context).size.width;
-  final columnCount = screenWidth ~/ posterMinWidth;
-  final posterWidth = screenWidth / columnCount;
+    final posterMinWidth =
+        (MediaQuery.of(context).size.width < 600) ? 150.0 : 250.0;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final columnCount = screenWidth ~/ posterMinWidth;
+    final posterWidth = screenWidth / columnCount;
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: FilterDrawer(
+        onApply: (type, year) {
+          // TODO: Apply filters
+        },
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -92,7 +101,7 @@ class SearchScreen extends StatelessWidget {
                     IconButton(
                       icon: Icon(Icons.display_settings),
                       onPressed: () {
-                        // TODO: call search action
+                        _scaffoldKey.currentState?.openDrawer();
                       },
                     ),
                     const SizedBox(width: 2),
@@ -111,12 +120,12 @@ class SearchScreen extends StatelessWidget {
                 child: Text('Search Random Movie'),
               ),
 
-              if(testData.movies.isNotEmpty) ...[
+              if (testData.movies.isNotEmpty) ...[
                 SizedBox(height: 36.0),
                 // Results list
                 Expanded(
                   child: GridView.builder(
-                  padding: EdgeInsets.zero,
+                    padding: EdgeInsets.zero,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: columnCount,
                       mainAxisSpacing: 8.0,
@@ -138,8 +147,9 @@ class SearchScreen extends StatelessWidget {
                           );
                         },
                       );
-                    }),
+                    },
                   ),
+                ),
               ],
             ],
           ),
