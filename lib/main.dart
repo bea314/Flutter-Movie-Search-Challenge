@@ -14,12 +14,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Movie App',
-      initialRoute: '/',
-      routes: {
-        '/': (context) => SearchScreen(),
-      },
+    return SafeArea(
+      child: MaterialApp(
+        title: 'Movie App',
+        initialRoute: '/',
+        routes: {
+          '/': (context) => SearchScreen(),
+          '/details': (context) {
+            final movieId = ModalRoute.of(context)!.settings.arguments as String;
+            return DetailScreen(id: movieId);
+          },
+        },
+      ),
     );
   }
 }
