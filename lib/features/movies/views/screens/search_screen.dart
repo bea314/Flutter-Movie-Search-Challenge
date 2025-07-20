@@ -131,11 +131,11 @@ class SearchScreen extends StatelessWidget {
                         title: movie.title,
                         posterUrl: movie.poster,
                         onTap: () {
-                          // Navigator.pushNamed(
-                          //   context,
-                          //   '/details',
-                          //   arguments: movie.id,
-                          // );
+                          Navigator.pushNamed(
+                            context,
+                            '/details',
+                            arguments: movie.imdbId,
+                          );
                         },
                       );
                     }),
