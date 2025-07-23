@@ -45,7 +45,11 @@ MovieDetailModel testDetailData = MovieDetailModel.fromMap({
 
 class DetailScreen extends StatelessWidget {
   final String id;
-  const DetailScreen({super.key, required this.id});
+  
+  const DetailScreen({
+    super.key, 
+    required this.id
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +58,7 @@ class DetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Movie Detail'),
       ),
-      body: MovieDetailView(movie: testDetailData),
+      body: MovieDetailView(id: id, movie: testDetailData),
     );
   }
 }

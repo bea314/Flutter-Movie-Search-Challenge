@@ -135,17 +135,20 @@ class SearchScreen extends StatelessWidget {
                     itemCount: testData.movies.length,
                     itemBuilder: (context, index) {
                       final movie = testData.movies[index];
-                      return MovieListItem(
-                        size: posterWidth,
-                        title: movie.title,
-                        posterUrl: movie.poster,
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            '/details',
-                            arguments: movie.imdbId,
-                          );
-                        },
+                      return Hero(
+                        tag: movie.imdbId,
+                        child: MovieListItem(
+                          size: posterWidth,
+                          title: movie.title,
+                          posterUrl: movie.poster,
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/details',
+                              arguments: movie.imdbId,
+                            );
+                          },
+                        ),
                       );
                     },
                   ),
