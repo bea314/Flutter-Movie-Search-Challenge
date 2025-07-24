@@ -32,10 +32,13 @@ class MovieDetailView extends StatelessWidget {
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "${movie.title} (${movie.year})",
-                style: Theme.of(context).textTheme.headlineSmall,
+              Flexible(
+                child: Text(
+                  "${movie.title} (${movie.year})",
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
               ),
               Chip(
                 label: Text(
