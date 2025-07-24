@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
 import '../../data/models/movie_detail_model.dart';
+import 'default_poster.dart';
 import 'star_rating.dart';
 
 class MovieDetailView extends StatelessWidget {
   final String id;
   final MovieDetailModel movie;
+  final String? poster;
 
   const MovieDetailView({
     super.key, 
     required this.id, 
     required this.movie,
+    this.poster,
   });
 
   @override
@@ -21,22 +24,11 @@ class MovieDetailView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // TODO: Set a defualt image and use the search view image for startes
-          if (movie.poster != null && movie.poster!.isNotEmpty)
-            Center(
-              child: Hero(
-                tag: id,
-                placeholderBuilder: (context, heroSize, child) => CircularProgressIndicator(),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    movie.poster!,
-                    fit: BoxFit.cover,
-                    height: 400,
-                  ),
-                ),
-              ),
+          Center(
+            child: PosterImage(
+              id, poster??movie.poster,
             ),
+          ),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
