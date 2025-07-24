@@ -2,57 +2,57 @@ import 'dart:convert';
 
 class MovieDetailModel {
     final String title;
-    final String year;
-    final String rated;
-    final String released;
-    final String runtime;
-    final String genre;
-    final String director;
-    final String writer;
-    final String actors;
-    final String plot;
-    final String language;
-    final String country;
-    final String awards;
-    final String poster;
-    final List<Rating> ratings;
-    final String metascore;
-    final String imdbRating;
-    final String imdbVotes;
+    final String? year;
+    final String? rated;
+    final String? released;
+    final String? runtime;
+    final String? genre;
+    final String? director;
+    final String? writer;
+    final String? actors;
+    final String? plot;
+    final String? language;
+    final String? country;
+    final String? awards;
+    final String? poster;
+    final List<Rating>? ratings;
+    final String? metascore;
+    final String? imdbRating;
+    final String? imdbVotes;
     final String imdbId;
-    final String type;
-    final String dvd;
-    final String boxOffice;
-    final String production;
-    final String website;
-    final String response;
+    final String? type;
+    final String? dvd;
+    final String? boxOffice;
+    final String? production;
+    final String? website;
+    final String? response;
 
     MovieDetailModel({
         required this.title,
-        required this.year,
-        required this.rated,
-        required this.released,
-        required this.runtime,
-        required this.genre,
-        required this.director,
-        required this.writer,
-        required this.actors,
-        required this.plot,
-        required this.language,
-        required this.country,
-        required this.awards,
-        required this.poster,
-        required this.ratings,
-        required this.metascore,
-        required this.imdbRating,
-        required this.imdbVotes,
+        this.year,
+        this.rated,
+        this.released,
+        this.runtime,
+        this.genre,
+        this.director,
+        this.writer,
+        this.actors,
+        this.plot,
+        this.language,
+        this.country,
+        this.awards,
+        this.poster,
+        this.ratings,
+        this.metascore,
+        this.imdbRating,
+        this.imdbVotes,
         required this.imdbId,
-        required this.type,
-        required this.dvd,
-        required this.boxOffice,
-        required this.production,
-        required this.website,
-        required this.response,
+        this.type,
+        this.dvd,
+        this.boxOffice,
+        this.production,
+        this.website,
+        this.response,
     });
 
     MovieDetailModel copyWith({
@@ -157,7 +157,7 @@ class MovieDetailModel {
         "Country": country,
         "Awards": awards,
         "Poster": poster,
-        "Ratings": List<dynamic>.from(ratings.map((x) => x.toMap())),
+        "Ratings": List<dynamic>.from((ratings??[]).map((x) => x.toMap())),
         "Metascore": metascore,
         "imdbRating": imdbRating,
         "imdbVotes": imdbVotes,

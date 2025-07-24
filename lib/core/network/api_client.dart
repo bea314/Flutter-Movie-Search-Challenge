@@ -22,8 +22,8 @@ class ApiClient {
     dataDio = Dio(commonOptions.copyWith(baseUrl: ApiConfig.baseUrl));
     imageDio = Dio(commonOptions.copyWith(baseUrl: ApiConfig.posterBaseUrl));
 
-    dataDio.interceptors.add(LogInterceptor());
-    imageDio.interceptors.add(LogInterceptor());
+    // dataDio.interceptors.add(LogInterceptor());
+    // imageDio.interceptors.add(LogInterceptor());
   }
 }
 
