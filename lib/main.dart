@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'features/movies/views/bloc/movie_detail_bloc.dart';
 import 'features/movies/views/bloc/movie_detail_event.dart';
+import 'features/movies/views/bloc/movie_search_bloc.dart';
 import 'features/movies/views/screens/screens.dart';
 import 'injection_container.dart' as di;
 
@@ -24,7 +25,10 @@ class MyApp extends StatelessWidget {
         title: 'Movie App',
         initialRoute: '/',
         routes: {
-          '/': (context) => SearchScreen(),
+          '/': (ctx) => BlocProvider(
+            create: (_) => di.sl<MovieSearchBloc>(),
+            child: SearchScreen(),
+          ),
           '/details': (context) {
             final movieId = ModalRoute.of(context)!.settings.arguments as String;
             return BlocProvider<MovieDetailBloc>(
