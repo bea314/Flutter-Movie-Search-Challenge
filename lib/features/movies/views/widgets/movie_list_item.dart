@@ -39,12 +39,13 @@ class MovieListItem extends StatelessWidget {
         child: MaterialButton(
           onPressed: onTap,
           padding: EdgeInsets.zero,
-          child: Card(
-            margin: EdgeInsets.zero,
-            child: posterUrl.isNotEmpty
-              ? Image.network(posterUrl, fit: BoxFit.contain)
-              : Icon(Icons.movie,),
-          ),
+          child: posterUrl.isNotEmpty
+            ? Image.network(
+              posterUrl, 
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Icon(Icons.image_not_supported_outlined, size: 100,),
+            )
+            : Icon(Icons.movie,),
         ),
       ),
     );
