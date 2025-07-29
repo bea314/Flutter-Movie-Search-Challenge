@@ -1,6 +1,5 @@
 import '../entities/movie.dart';
 import '../entities/movie_detail.dart';
-import '../enums/media_type.dart';
 
 abstract class MovieRepository {
   /// Search of movie list 
