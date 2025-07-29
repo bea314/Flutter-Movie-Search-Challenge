@@ -13,8 +13,8 @@ class ApiClient {
 
   ApiClient._internal() {
     final commonOptions = BaseOptions(
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 15),
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 120),
       headers: {'Content-Type': 'application/json'},
       queryParameters: {'apikey': dotenv.env['OMDB_API_KEY']},
     );
