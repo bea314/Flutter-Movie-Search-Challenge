@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import '../../logic/enums/media_type.dart';
+
 class MovieDetailModel {
     final String title;
     final String? year;
@@ -20,7 +22,7 @@ class MovieDetailModel {
     final String? imdbRating;
     final String? imdbVotes;
     final String imdbId;
-    final String? type;
+    final MediaType? type;
     final String? dvd;
     final String? boxOffice;
     final String? production;
@@ -75,7 +77,7 @@ class MovieDetailModel {
         String? imdbRating,
         String? imdbVotes,
         String? imdbId,
-        String? type,
+        MediaType? type,
         String? dvd,
         String? boxOffice,
         String? production,
@@ -134,7 +136,7 @@ class MovieDetailModel {
         imdbRating: json["imdbRating"],
         imdbVotes: json["imdbVotes"],
         imdbId: json["imdbID"],
-        type: json["Type"],
+        type: MediaTypeExtension.fromString(json['Type'] ?? ''),
         dvd: json["DVD"],
         boxOffice: json["BoxOffice"],
         production: json["Production"],

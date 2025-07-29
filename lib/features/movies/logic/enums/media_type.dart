@@ -1,4 +1,4 @@
-enum MediaType { movie, series, episode }
+enum MediaType { movie, series, episode, unknown }
 
 extension MediaTypeExtension on MediaType {
   String get value {
@@ -9,6 +9,8 @@ extension MediaTypeExtension on MediaType {
         return 'series';
       case MediaType.episode:
         return 'episode';
+      case MediaType.unknown:
+        return 'unknown';
     }
   }
 
@@ -20,6 +22,8 @@ extension MediaTypeExtension on MediaType {
         return MediaType.series;
       case 'episode':
         return MediaType.episode;
+      case '':
+        return MediaType.unknown; // Assuming 'unknown' is a valid type
       default:
         throw ArgumentError('Unknown MediaType: $type');
     }

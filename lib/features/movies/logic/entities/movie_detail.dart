@@ -1,3 +1,5 @@
+import '../../data/models/movie_detail_model.dart';
+
 class MovieDetail {
   final String imdbId;
   final String title;
@@ -14,7 +16,7 @@ class MovieDetail {
   final String? language;
   final String? country;
   final String? awards;
-  final List<dynamic>? ratings;
+  final List<Rating>? ratings;
   final String? metascore;
   final String? imdbRating;
   final String? imdbVotes;

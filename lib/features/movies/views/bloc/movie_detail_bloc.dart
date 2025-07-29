@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/movie_detail_model.dart';
+import '../../logic/enums/media_type.dart';
 import '../../logic/usecases/get_movie_detail.dart';
 import 'movie_detail_event.dart';
 import 'movie_detail_state.dart';
@@ -36,11 +37,11 @@ class MovieDetailBloc extends Bloc<DetailRequested, MovieDetailState> {
         language: entity.language, 
         country: entity.country, 
         awards: entity.awards, 
-        ratings: entity.ratings?.map((s) => Rating.fromMap(s)).toList(), 
+        ratings: entity.ratings, 
         metascore: entity.metascore, 
         imdbRating: entity.imdbRating, 
         imdbVotes: entity.imdbVotes, 
-        type: entity.type, 
+        type: MediaTypeExtension.fromString(entity.type ?? ''),
         dvd: entity.dvd, 
         boxOffice: entity.boxOffice, 
         production: entity.production, 
