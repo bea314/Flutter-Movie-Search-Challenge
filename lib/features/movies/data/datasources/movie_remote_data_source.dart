@@ -47,7 +47,11 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
         if (year != null) 'y': year,
       },
     );
-    if (resp.statusCode == 200 && resp.data['Search'] != null) {
+    // IF OMDb response with Error...
+    if (resp.data['Response'] == 'False') {
+      throw Exception(resp.data['Error'] as String? ?? 'Unknown API error');
+    } 
+    else if (resp.statusCode == 200 && resp.data['Search'] != null) {
       final list = resp.data['Search'] as List<dynamic>;
       return list
           .map((e) => MovieModel.fromMap(e as Map<String, dynamic>))
