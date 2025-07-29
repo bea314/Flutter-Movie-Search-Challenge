@@ -34,7 +34,11 @@ class _FilterDrawerState extends State<FilterDrawer> {
       if (_selectedTypes.contains(type)) {
         _selectedTypes.remove(type);
       } else {
-        _selectedTypes.add(type);
+        // Because the API does not support multiple types,
+        // we clear the list and add the selected type
+        _selectedTypes
+          ..clear()
+          ..add(type);
       }
     });
   }
@@ -74,6 +78,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
                     children:
                         MediaType.values.map((type) {
                           final isSelected = _selectedTypes.contains(type);
+                          if(type == MediaType.unknown) return const SizedBox.shrink();
                           return FilterChip(
                             label: Text(type.value),
                             selected: isSelected,
