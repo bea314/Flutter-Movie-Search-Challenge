@@ -1,160 +1,175 @@
 import 'package:flutter/material.dart';
-import '../../data/models/movie_model.dart';
-import '../../data/models/movie_response_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../logic/enums/media_type.dart';
+import '../bloc/movie_search_bloc.dart';
+import '../bloc/movie_search_event.dart';
+import '../bloc/movie_search_state.dart';
 import '../widgets/drawer_filter.dart';
 import '../widgets/modal_error_bottom_sheet.dart';
 import '../widgets/movie_list_item.dart';
 
-MovieResponseModel testData = MovieResponseModel(
-  totalResults: '1',
-  response: 'True',
-  movies: [
-    MovieModel.fromMap({
-            "Title": "Eva",
-            "Year": "2011",
-            "imdbID": "tt1298554",
-            "Type": "movie",
-            "Poster": "https://m.media-amazon.com/images/M/MV5BNDZmY2YyYTktZTRiNS00OTJlLWJlOWUtNjk3MjgxZGM3NjIxXkEyXkFqcGc@._V1_SX300.jpg"
-        }),
-    MovieModel.fromMap({
-            "Title": "Eva & Adam",
-            "Year": "1999–2001",
-            "imdbID": "tt0136638",
-            "Type": "series",
-            "Poster": "https://m.media-amazon.com/images/M/MV5BMWMwMjA4M2ItYmFlNS00NGQxLWI0OWYtYzQzYTRhMTdiYjhiXkEyXkFqcGc@._V1_SX300.jpg"
-        },),
-    MovieModel.fromMap({
-            "Title": "The Deflowering of Eva van End",
-            "Year": "2012",
-            "imdbID": "tt2323264",
-            "Type": "movie",
-            "Poster": "https://m.media-amazon.com/images/M/MV5BMjE0MTc5OTA0OF5BMl5BanBnXkFtZTcwMzg4NDc4OA@@._V1_SX300.jpg"
-        },),
-    MovieModel.fromMap({
-            "Title": "Eva",
-            "Year": "2021",
-            "imdbID": "tt16757252",
-            "Type": "movie",
-            "Poster": "https://m.media-amazon.com/images/M/MV5BYjlhYmE5MGUtYWIzMi00NzAyLWI4NTktOGI5ZGRlN2FjNzg5XkEyXkFqcGc@._V1_SX300.jpg"
-        },),
-  ],
-);
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
 
-class SearchScreen extends StatelessWidget {
-  SearchScreen({super.key});
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
 
+class _SearchScreenState extends State<SearchScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final TextEditingController _controller = TextEditingController();
+  
+    List<MediaType> _activeTypes = [];
+    String?        _activeYear;
 
-  void _onSearch(BuildContext context) async {
-    final query = _controller.text.trim();
-    print('Searching for: $query');
-    if (query.isEmpty) {
-      ErrorBottomSheet.show(
-        context,
-        title: 'Warning',
-        message: 'Please enter a movie title to search.',
-        actionLabel: 'ok',
-      );
-      return;
+    void _onSearch(BuildContext context) async {
+      final query = _controller.text.trim();
+      if (query.isEmpty) {
+        ErrorBottomSheet.show(
+          context,
+          title: 'Warning',
+          message: 'Please enter a movie title to search.',
+          actionLabel: 'OK',
+        );
+      } else {
+        // Dispatch the event
+        context.read<MovieSearchBloc>().add(
+              SearchRequested(
+                query, 
+                types: _activeTypes,
+                year: _activeYear,
+              ),
+        );
+      }
     }
-  }
 
   @override
   Widget build(BuildContext context) {
-    final posterMinWidth =
-        (MediaQuery.of(context).size.width < 600) ? 150.0 : 250.0;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final columnCount = screenWidth ~/ posterMinWidth;
-    final posterWidth = screenWidth / columnCount;
     return Scaffold(
       key: _scaffoldKey,
       drawer: FilterDrawer(
-        onApply: (type, year) {
-          // TODO: Apply filters
+        selectedTypes: _activeTypes,
+        selectedYear:  _activeYear,
+        onSearch: () => _onSearch(context),
+        onApply: (types, year) {
+          setState(() {
+            _activeTypes = types;
+            _activeYear  = year;
+          });
         },
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
+        padding: const EdgeInsets.all(16),
+        child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 600),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _controller,
-                        decoration: InputDecoration(
-                          labelText: 'Search by movie title',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSubmitted: (_) {
-                          // TODO: call search action
-                        },
+          children: [
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      decoration: const InputDecoration(
+                        labelText: 'Search by movie title',
+                        border: OutlineInputBorder(),
                       ),
+                      onSubmitted: (_) => _onSearch(context),
                     ),
-                    const SizedBox(width: 8),
-                    IconButton(
-                      icon: Icon(Icons.display_settings),
-                      onPressed: () {
-                        _scaffoldKey.currentState?.openDrawer();
-                      },
-                    ),
-                    const SizedBox(width: 2),
-                    IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () => _onSearch(context),
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    icon: const Icon(Icons.display_settings),
+                    onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+                  ),
+                  const SizedBox(width: 2),
+                  IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () => _onSearch(context),
+                  ),
+                ],
               ),
-              SizedBox(height: 36.0),
-              TextButton(
-                onPressed: () {
-                  // TODO: call search action
-                },
-                child: Text('Search Random Movie'),
+            ),
+            SizedBox(height: 12.0),
+            MaterialButton(
+              onPressed: () {
+                _controller.clear();
+                setState(() {
+                  _activeTypes.clear();
+                  _activeYear = null;
+                });
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.delete),
+                  SizedBox(width: 8),
+                  Text('Delete search and filters'),
+                ],
               ),
+            ),
 
-              if (testData.movies.isNotEmpty) ...[
-                SizedBox(height: 36.0),
-                // Results list
-                Expanded(
-                  child: GridView.builder(
-                    padding: EdgeInsets.zero,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: columnCount,
+            BlocConsumer<MovieSearchBloc, MovieSearchState>(
+              listener: (ctx, state) {
+                if (state is MovieSearchError) {
+                  ErrorBottomSheet.show(
+                    context,
+                    title: 'Error',
+                    message: state.message,
+                    actionLabel: 'OK',
+                  );
+                }
+              },
+              builder: (ctx, state) {
+                if (state is MovieSearchInitial) {
+                  return const SizedBox.shrink();
+                } else if (state is MovieSearchLoading) {
+                  return Expanded(child: const Center(child: CircularProgressIndicator()));
+                } else if (state is MovieSearchLoaded) {
+                  final movies = state.movies;
+                  if (movies.isEmpty) {
+                    return Expanded(child: const Center(child: Text('No results found.')));
+                  }
+                  // grid layout
+                  final screenWidth = MediaQuery.of(context).size.width;
+                  final count = screenWidth ~/ 150;
+                  final tileWidth = screenWidth / count;
+                  return Expanded(
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: count,
                       mainAxisSpacing: 8.0,
                       crossAxisSpacing: 8.0,
-                      childAspectRatio: 2 / 3,
-                    ),
-                    itemCount: testData.movies.length,
-                    itemBuilder: (context, index) {
-                      final movie = testData.movies[index];
-                      return Hero(
-                        tag: movie.imdbId,
-                        child: MovieListItem(
-                          size: posterWidth,
-                          title: movie.title,
-                          posterUrl: movie.poster,
-                          onTap: () {
-                            Navigator.pushNamed(
+                        childAspectRatio: 2 / 3,
+                      ),
+                      itemCount: movies.length,
+                      itemBuilder: (_, i) {
+                        final m = movies[i];
+                        return Hero(
+                          tag: m.imdbId,
+                          child: MovieListItem(
+                            size: tileWidth,
+                            title: m.title,
+                            posterUrl: m.posterUrl,
+                            onTap: () => Navigator.pushNamed(
                               context,
                               '/details',
-                              arguments: movie.imdbId,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ],
+                              arguments: m.imdbId,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+                // fallback
+                return const SizedBox.shrink();
+              },
+            ),
+          ],
           ),
         ),
       ),

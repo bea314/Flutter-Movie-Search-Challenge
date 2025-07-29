@@ -48,7 +48,7 @@ class MovieModel {
         "Title": title,
         "Year": year,
         "imdbID": imdbId,
-        "Type": type,
+        "Type": type.value,
         "Poster": poster,
     };
 }
