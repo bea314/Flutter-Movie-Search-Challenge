@@ -7,7 +7,8 @@ abstract class MovieRepository {
   /// Throw [Exception] if fails.
   Future<List<Movie>> searchMovies({
     required String query,
-    MediaType? type, 
+    String? type,
+    String? year,
     int page,
   });
   /// Search for movie detail

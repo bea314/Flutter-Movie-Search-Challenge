@@ -43,14 +43,14 @@ class MovieRepositoryImpl implements MovieRepository {
   @override
   Future<List<Movie>> searchMovies({
     required String query,
-    MediaType? type,
+    String? type,
     String? year,
     int page = 1,
   }) async {
     // 1) Call remote data source
     final models = await remote.searchMoviesApi(
       query: query,
-      type:  type?.value,
+      type:  type,
       year:  year,
       page:  page,
     );

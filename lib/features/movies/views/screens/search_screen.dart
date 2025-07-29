@@ -38,8 +38,14 @@ class SearchScreen extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       drawer: FilterDrawer(
-        onApply: (type, year) {
-          // TODO: extend SearchRequested to carry filters
+        onApply: (types, year) {
+          context.read<MovieSearchBloc>().add(
+            SearchRequested(
+              _controller.text.trim(),
+              types: types,
+              year:  year,
+            ),
+          );
         },
       ),
       body: Center(

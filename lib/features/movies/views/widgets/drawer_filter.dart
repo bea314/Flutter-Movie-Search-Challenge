@@ -68,7 +68,6 @@ class _FilterDrawerState extends State<FilterDrawer> {
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 2),
-
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
